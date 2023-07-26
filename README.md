@@ -55,8 +55,7 @@ The following is a sample Input and Output JSON for this model which you can use
   "outputs": [
     {
       "data": [
-        "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/
-        ....."
+        "/9j/4AAQSkZJRgABAQAAAQABAAD....."
       ],
       "name": "generated_image_base64",
       "shape": [
