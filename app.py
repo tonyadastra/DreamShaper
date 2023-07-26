@@ -32,7 +32,7 @@ class InferlessPythonModel:
         controller.enable_xformers_memory_efficient_attention()
         self.pipe = controller
 
-    def resize_for_condition_image(input_image, resolution: int = 512):
+    def resize_for_condition_image(self, input_image, resolution: int = 512):
         import PIL.Image
 
         input_image = input_image.convert("RGB")
@@ -47,28 +47,22 @@ class InferlessPythonModel:
 
 
 
-    def download_image(url):
+    def download_image(self, url):
         response = requests.get(url)
         return PIL.Image.open(BytesIO(response.content)).convert("RGB")
 
     
     def infer(self, inputs):
 
-        input_url = inputs["input_image_url"]
-        input_image = InferlessPythonModel.download_image(input_image_url).resize((512, 512))
-        print(input_image[:10])
-        print(input_image[-10:])
-        if "base64," in input_image:
-            input_image = input_image.split("base64,")[1]
-        input_image = PIL.Image.open(io.BytesIO(base64.b64decode(input_image))).convert(
-            "RGB"
-        )
-        input_image = input_image.resize((512, 512), resample=PIL.Image.LANCZOS)
+        input_image_url = inputs["input_image_url"]
+        input_image = self.download_image(input_image_url).resize((512, 512))
+        print(input_image)
+
         tile_input_image = self.resize_for_condition_image(input_image)
         
         prompt = inputs["prompt"]
         image = self.pipe(
-            text,
+            prompt,
             image=[input_image, tile_input_image],
             height=512,
             width=512,
