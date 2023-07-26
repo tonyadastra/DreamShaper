@@ -45,8 +45,8 @@ class InferlessPythonModel:
         return img
 
     def download_image(self, url):
-        if "base64," in input_image:
-            input_image = input_image.split("base64,")[1]
+        if "base64," in url:
+            input_image = url.split("base64,")[1]
             return PIL.Image.open(BytesIO(base64.b64decode(input_image))).convert("RGB")
         else:
             response = requests.get(url)
@@ -68,9 +68,9 @@ class InferlessPythonModel:
             guidance_scale=9,
         )["images"][0]
 
-        buff = BytesIO()
         output_image = PIL.Image.blend(input_image, output_image, 0.9)
         
+        buff = BytesIO()
         output_image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
         return {"generated_image_base64": img_str.decode("utf-8")}
