@@ -12,7 +12,8 @@ class InferlessPythonModel:
         )
         self.pipe = self.pipe.to("cuda:0")
 
-    def infer(self, prompt):
+    def infer(self, inputs):
+        prompt = inputs["prompt"]
         image = self.pipe(prompt).images[0]
         buff = BytesIO()
         image.save(buff, format="JPEG")
