@@ -85,19 +85,29 @@ curl --location '<your_inference_url>' \
           --header 'Content-Type: application/json' \
           --header 'Authorization: Bearer <your_api_key>' \
           --data '{
-                  "inputs": [
-                    {
-                      "data": [
-                        "Image of bride and groom near beach"
-                      ],
-                      "name": "prompt",
-                      "shape": [
-                        1
-                      ],
-                      "datatype": "BYTES"
-                    }
-                  ]
-                }
+                    "inputs": [
+                      {
+                        "data": [
+                          "Image of tortoise painted in color"
+                        ],
+                        "name": "prompt",
+                        "shape": [
+                          1
+                        ],
+                        "datatype": "BYTES"
+                      },
+                      {
+                        "name": "input_image_url",
+                        "shape": [
+                          1
+                        ],
+                        "datatype": "BYTES",
+                        "data": [
+                          "https://raahul-test-model-repo.s3.amazonaws.com/tortoise_1.png"
+                        ]
+                      }
+                    ]
+                  }
             '
 ```
 
