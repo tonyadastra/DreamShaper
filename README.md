@@ -18,7 +18,7 @@ This will create a copy of the repository in your own GitHub account, allowing y
 ### Create a Custom Runtime in Inferless
 To access the custom runtime window in Inferless, simply navigate to the sidebar and click on the **Create new Runtime** button. A pop-up will appear.
 
-Next, provide a suitable name for your custom runtime and proceed by uploading the **config.yaml** file mentioned above. Finally, ensure you save your changes by clicking on the save button.
+Next, provide a suitable name for your custom runtime and proceed by uploading the **config.yaml** file given above. Finally, ensure you save your changes by clicking on the save button.
 
 ### Import the Model in Inferless
 Log in to your inferless account, select the workspace you want the model to be imported into and click the Add Model button.
