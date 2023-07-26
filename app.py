@@ -6,6 +6,7 @@ import PIL.Image
 import base64
 import io
 from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
+import requests
 
 
 class InferlessPythonModel:
@@ -44,9 +45,17 @@ class InferlessPythonModel:
         img = input_image.resize((W, H), resample=PIL.Image.LANCZOS)
         return img
 
+
+
+    def download_image(url):
+        response = requests.get(url)
+        return PIL.Image.open(BytesIO(response.content)).convert("RGB")
+
+    
     def infer(self, inputs):
 
-        input_image = inputs["input_image"]
+        input_url = inputs["input_image_url"]
+        input_image = InferlessPythonModel.download_image(input_image_url).resize((512, 512))
         print(input_image[:10])
         print(input_image[-10:])
         if "base64," in input_image:
