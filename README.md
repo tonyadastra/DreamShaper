@@ -75,18 +75,18 @@ curl --location '<your_inference_url>' \
           --header 'Content-Type: application/json' \
           --header 'Authorization: Bearer <your_api_key>' \
           --data '{
-                "inputs": [
+                  "inputs": [
                     {
-                    "data": [
-                        "How to count all the stars in the night sky?"
-                    ],
-                    "name": "message",
-                    "shape": [
+                      "data": [
+                        "Image of bride and groom near beach"
+                      ],
+                      "name": "prompt",
+                      "shape": [
                         1
-                    ],
-                    "datatype": "BYTES"
+                      ],
+                      "datatype": "BYTES"
                     }
-                ]
+                  ]
                 }
             '
 ```
