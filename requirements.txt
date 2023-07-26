@@ -1,0 +1,8 @@
+accelerate
+datasets
+diffusers
+Pillow
+torch
+transformers
+triton
+xformers
