@@ -3,6 +3,7 @@ from io import BytesIO
 import base64
 from diffusers import DiffusionPipeline
 import PIL.Image
+import base64
 import io
 from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
 import requests
@@ -44,18 +45,22 @@ class InferlessPythonModel:
         img = input_image.resize((W, H), resample=PIL.Image.LANCZOS)
         return img
 
+
+
     def download_image(self, url):
         response = requests.get(url)
         return PIL.Image.open(BytesIO(response.content)).convert("RGB")
 
+    
     def infer(self, inputs):
+
         input_image_url = inputs["input_image_url"]
         input_image = self.download_image(input_image_url).resize((512, 512))
-        print(input_image.size)
-        tile_input_image = self.resize_for_condition_image(input_image)
 
+        tile_input_image = self.resize_for_condition_image(input_image)
+        
         prompt = inputs["prompt"]
-        output_image = self.pipe(
+        image = self.pipe(
             prompt,
             image=[input_image, tile_input_image],
             height=512,
@@ -64,8 +69,6 @@ class InferlessPythonModel:
             controlnet_conditioning_scale=[0.45, 0.25],
             guidance_scale=9,
         )["images"][0]
-
-        # output_image = PIL.Image.blend(input_image, output_image, 0.9)
         
         buff = BytesIO()
         image.save(buff, format="JPEG")
