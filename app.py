@@ -48,6 +48,10 @@ class InferlessPythonModel:
 
 
     def download_image(self, url):
+        if "base64," in url:
+            url = url.split("base64,")[1]
+            image = PIL.Image.open(io.BytesIO(base64.b64decode(url)))
+            return image.convert("RGB")
         response = requests.get(url)
         return PIL.Image.open(BytesIO(response.content)).convert("RGB")
 
