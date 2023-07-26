@@ -45,18 +45,13 @@ class InferlessPythonModel:
         return img
 
     def download_image(self, url):
-        if "base64," in url:
-            input_image = url.split("base64,")[1]
-            print(input_image)
-            return PIL.Image.open(BytesIO(base64.b64decode(input_image))).convert("RGB")
-        else:
-            response = requests.get(url)
-            return PIL.Image.open(BytesIO(response.content)).convert("RGB")
+        response = requests.get(url)
+        return PIL.Image.open(BytesIO(response.content)).convert("RGB")
 
     def infer(self, inputs):
         input_image_url = inputs["input_image_url"]
         input_image = self.download_image(input_image_url).resize((512, 512))
-        prunt(input_image.size)
+        print(input_image.size)
         tile_input_image = self.resize_for_condition_image(input_image)
 
         prompt = inputs["prompt"]
@@ -73,7 +68,7 @@ class InferlessPythonModel:
         # output_image = PIL.Image.blend(input_image, output_image, 0.9)
         
         buff = BytesIO()
-        output_image.save(buff, format="JPEG")
+        image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
         return {"generated_image_base64": img_str.decode("utf-8")}
 
