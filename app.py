@@ -74,6 +74,8 @@ class InferlessPythonModel:
             guidance_scale=9,
         )["images"][0]
         
+        image = PIL.Image.blend(input_image, image, 0.9)
+
         buff = BytesIO()
         image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
