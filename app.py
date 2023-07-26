@@ -56,7 +56,6 @@ class InferlessPythonModel:
 
         input_image_url = inputs["input_image_url"]
         input_image = self.download_image(input_image_url).resize((512, 512))
-        print(input_image)
 
         tile_input_image = self.resize_for_condition_image(input_image)
         
