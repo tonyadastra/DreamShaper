@@ -45,13 +45,16 @@ The following is a sample Input and Output JSON for this model which you can use
       ],
       "datatype": "BYTES"
     },
-    ,
-    {    
-    "name": "input_image_url",
-    "shape": [1],
-    "datatype": "BYTES",
-    "data":  ["https://replicate.delivery/pbxt/IJE6zP4jtdwxe7SffC7te9DPHWHW99dMXED5AWamlBNcvxn0/user_1.png"]
-   },
+    {
+      "name": "input_image_url",
+      "shape": [
+        1
+      ],
+      "datatype": "BYTES",
+      "data": [
+        "https://replicate.delivery/pbxt/IJE6zP4jtdwxe7SffC7te9DPHWHW99dMXED5AWamlBNcvxn0/user_1.png"
+      ]
+    }
   ]
 }
 ```
