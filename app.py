@@ -7,7 +7,7 @@ import base64
 import io
 from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
 import requests
-import wandb
+# import wandb
 
 
 class InferlessPythonModel:
@@ -80,15 +80,15 @@ class InferlessPythonModel:
         image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
         
-        wandb.init(project="hello-qart")
-        columns=["id", "image"]
-        my_data = [
-            ["input", wandb.Image(input_image, caption="input")],
-            [wandb.Image(image, caption=prompt), wandb.Image(img_str, caption=prompt)],
-        ]
+        # wandb.init(project="hello-qart")
+        # columns=["id", "image"]
+        # my_data = [
+        #     ["input", wandb.Image(input_image, caption="input")],
+        #     [wandb.Image(image, caption=prompt), wandb.Image(img_str, caption=prompt)],
+        # ]
         
-        qart_table = wandb.Table(data=my_data, columns=columns)
-        wandb.log({"qart_inference": qart_table})
+        # qart_table = wandb.Table(data=my_data, columns=columns)
+        # wandb.log({"qart_inference": qart_table})
         
         return {"generated_image_base64": img_str.decode("utf-8")}
 
