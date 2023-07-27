@@ -87,6 +87,6 @@ class InferlessPythonModel:
         
         return {"generated_image_base64": img_str.decode("utf-8")}
 
-    def finalize(self):
+    def finalize(self, args):
         self.pipe = None
     
