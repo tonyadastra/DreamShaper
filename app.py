@@ -82,11 +82,18 @@ class InferlessPythonModel:
         image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
         
-        output_image = wandb.Image(img_str, caption=prompt)
-        wandb.log({"output_image": output_image})
+        columns=["id", "image"]
+
+        my_data = [
+            ["input", wandb.Image(input_image, caption="input")],
+            [wandb.Image(image, caption=prompt), wandb.Image(img_str, caption=prompt)],
+        ]
+        
+        qart = wandb.Table(data=my_data, columns=columns)
+        wandb.log({"qart_inference": qart})
         
         return {"generated_image_base64": img_str.decode("utf-8")}
 
-    def finalize(self, args):
+    def finalize(self):
         self.pipe = None
     
