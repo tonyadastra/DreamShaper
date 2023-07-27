@@ -7,10 +7,13 @@ import base64
 import io
 from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
 import requests
+import wandb
+
 
 
 class InferlessPythonModel:
     def initialize(self):
+        wandb.init({"project": "QArt"})
         brightness_controlnet = ControlNetModel.from_pretrained(
             "ioclab/control_v1p_sd15_brightness", torch_dtype=torch.float16
         )
@@ -57,7 +60,6 @@ class InferlessPythonModel:
 
     
     def infer(self, inputs):
-
         input_image_url = inputs["input_image_url"]
         input_image = self.download_image(input_image_url).resize((512, 512))
 
@@ -79,6 +81,10 @@ class InferlessPythonModel:
         buff = BytesIO()
         image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
+        
+        output_image = wandb.Image(img_str, caption=prompt)
+        wandb.log({"output_image": output_image})
+        
         return {"generated_image_base64": img_str.decode("utf-8")}
 
     def finalize(self):
