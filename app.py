@@ -13,7 +13,7 @@ import wandb
 
 class InferlessPythonModel:
     def initialize(self):
-        wandb.init({"project": "QArt"})
+        wandb.init(project="hello-qart")
         brightness_controlnet = ControlNetModel.from_pretrained(
             "ioclab/control_v1p_sd15_brightness", torch_dtype=torch.float16
         )
