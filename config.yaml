@@ -13,4 +13,3 @@ build:
     - "triton==2.0.0"
     - "xformers==0.0.20"
     - "wandb==0.15.5"
-  
