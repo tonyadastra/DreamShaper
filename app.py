@@ -10,10 +10,8 @@ import requests
 import wandb
 
 
-
 class InferlessPythonModel:
     def initialize(self):
-        wandb.init(project="hello-qart")
         brightness_controlnet = ControlNetModel.from_pretrained(
             "ioclab/control_v1p_sd15_brightness", torch_dtype=torch.float16
         )
@@ -82,18 +80,19 @@ class InferlessPythonModel:
         image.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue())
         
+        wandb.init(project="hello-qart")
         columns=["id", "image"]
-
         my_data = [
             ["input", wandb.Image(input_image, caption="input")],
             [wandb.Image(image, caption=prompt), wandb.Image(img_str, caption=prompt)],
         ]
         
-        qart = wandb.Table(data=my_data, columns=columns)
-        wandb.log({"qart_inference": qart})
+        qart_table = wandb.Table(data=my_data, columns=columns)
+        wandb.log({"qart_inference": qart_table})
         
         return {"generated_image_base64": img_str.decode("utf-8")}
 
     def finalize(self):
+        wandb.finish()
         self.pipe = None
     
