@@ -89,3 +89,4 @@ class InferlessPythonModel:
 
     def finalize(self):
         self.pipe = None
+    
