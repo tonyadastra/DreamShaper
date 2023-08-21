@@ -7,7 +7,7 @@ import base64
 import io
 from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
 import requests
-import wandb
+import boto3
 
 
 class InferlessPythonModel:
@@ -55,6 +55,27 @@ class InferlessPythonModel:
             return image.convert("RGB")
         response = requests.get(url)
         return PIL.Image.open(BytesIO(response.content)).convert("RGB")
+    
+    
+    def upload_image_to_s3(image, bucket_name, file_name, region_name='us-west-1'):
+        # Save the image to a bytes buffer in PNG format
+        buff = BytesIO()
+        image.save(buff, format="PNG")
+
+        # Get the byte data from the buffer
+        image_bytes = buff.getvalue()
+
+        # Initialize the S3 client
+        s3 = boto3.client('s3', region_name=region_name)
+
+        # Upload the image bytes to S3 with public-read ACL and PNG content type
+        s3.put_object(Bucket=bucket_name, Key=file_name, Body=image_bytes, ContentType='image/png', ACL='public-read')
+
+        # Construct the public URL for the uploaded image
+        url = f"https://{bucket_name}.s3.{region_name}.amazonaws.com/{file_name}"
+
+        print(f"Image uploaded to {url}")
+        return url
 
     
     def infer(self, inputs):
@@ -76,23 +97,14 @@ class InferlessPythonModel:
         
         image = PIL.Image.blend(input_image, image, 0.9)
 
-        buff = BytesIO()
-        image.save(buff, format="JPEG")
-        img_str = base64.b64encode(buff.getvalue())
+        url = self.upload_image_to_s3(image, "qart-public", "result.png")
+        # buff = BytesIO()
+        # image.save(buff, format="JPEG")
+        # image_bytes = buff.getvalue()
+        # img_str = base64.b64encode(buff.getvalue())
         
-        wandb.init(project="hello-qart")
-        columns=["id", "image"]
-        my_data = [
-            ["input", wandb.Image(input_image, caption="input")],
-            [wandb.Image(image, caption=prompt), wandb.Image(img_str, caption=prompt)],
-        ]
-        
-        qart_table = wandb.Table(data=my_data, columns=columns)
-        wandb.log({"qart_inference": qart_table})
-        
-        return {"generated_image_base64": img_str.decode("utf-8")}
+        return {"url": url}
 
-    def finalize(self, args):
-        wandb.finish()
+    def finalize(self):
         self.pipe = None
     
