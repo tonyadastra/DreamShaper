@@ -8,7 +8,8 @@ import io
 from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
 import requests
 import boto3
-
+import os
+import datetime
 
 class InferlessPythonModel:
     def initialize(self):
@@ -61,6 +62,7 @@ class InferlessPythonModel:
         # Save the image to a bytes buffer in PNG format
         buff = BytesIO()
         image.save(buff, format="PNG")
+        file_name = file_name.replace(" ", "-").lower().strip()
 
         # Get the byte data from the buffer
         image_bytes = buff.getvalue()
@@ -100,7 +102,9 @@ class InferlessPythonModel:
         
         image = PIL.Image.blend(input_image, image, 0.9)
         
-        url = self.upload_image_to_s3(image, "qart-public", prompt.replace(" ", "_").strip() + ".png")
+        filename = "qart-" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + ".png"
+
+        url = self.upload_image_to_s3(image, "qart-public", filename)
 
         return {"url": url}
 
