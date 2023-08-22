@@ -57,7 +57,7 @@ class InferlessPythonModel:
         return PIL.Image.open(BytesIO(response.content)).convert("RGB")
     
     
-    def upload_image_to_s3(image, bucket_name, file_name, region_name='us-west-1'):
+    def upload_image_to_s3(self, image, bucket_name, file_name, region_name='us-west-1'):
         # Save the image to a bytes buffer in PNG format
         buff = BytesIO()
         image.save(buff, format="PNG")
@@ -96,6 +96,8 @@ class InferlessPythonModel:
         )["images"][0]
         
         image = PIL.Image.blend(input_image, image, 0.9)
+        
+        print(image)
 
         url = self.upload_image_to_s3(image, "qart-public", "result.png")
         # buff = BytesIO()
